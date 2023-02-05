@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.core.NonNullList;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -99,16 +101,19 @@ public class MechanicalCraftingCategory extends CreateRecipeCategory<CraftingRec
 		matrixStack.translate(getXPadding(recipe), getYPadding(recipe), 0);
 
 		for (int row = 0; row < getHeight(recipe); row++)
-			for (int col = 0; col < getWidth(recipe); col++)
-				if (!recipe.getIngredients()
-					.get(row * getWidth(recipe) + col)
-					.isEmpty()) {
+			for (int col = 0; col < getWidth(recipe); col++) {
+				NonNullList<Ingredient> ingredients = recipe.getIngredients();
+				int index = row * getWidth(recipe) + col;
+				if (index < ingredients.size() && !recipe.getIngredients()
+						.get(index)
+						.isEmpty()) {
 					matrixStack.pushPose();
 					matrixStack.translate(col * 19 * scale, row * 19 * scale, 0);
 					matrixStack.scale(scale, scale, scale);
 					AllGuiTextures.JEI_SLOT.render(matrixStack, 0, 0);
 					matrixStack.popPose();
 				}
+			}
 
 		matrixStack.popPose();
 

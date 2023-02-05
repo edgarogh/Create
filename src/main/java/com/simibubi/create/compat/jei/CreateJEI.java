@@ -287,8 +287,9 @@ public class CreateJEI implements IModPlugin {
 						&& r.getIngredients()
 						.size() == 1
 						&& !AllRecipeTypes.shouldIgnoreInAutomation(r))
-				.addTypedRecipesIf(() -> RecipeType.CRAFTING,
-						recipe -> recipe instanceof IShapedRecipe<?> && !AllRecipeTypes.shouldIgnoreInAutomation(recipe))
+				.addTypedRecipesIf(() -> RecipeType.CRAFTING, recipe -> recipe instanceof IShapedRecipe<?>
+						&& !AllRecipeTypes.shouldIgnoreInAutomation(recipe)
+						&& !(recipe instanceof CraftingRecipe craftingRecipe && recipe.isSpecial()))
 				.catalyst(AllBlocks.MECHANICAL_CRAFTER::get)
 				.itemIcon(AllBlocks.MECHANICAL_CRAFTER.get())
 				.emptyBackground(177, 107)
